@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Документы{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item active">Документы</li>
+            </ol>
+        </nav>
+        <h1 class="page-title">Документы</h1>
+        <p class="page-subtitle">Устав, протоколы собраний и другие официальные документы кооператива</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        {% if categories %}
+            {% for category_name, docs in categories.items %}
+            <div class="doc-section mb-5">
+                <h3 class="doc-section__title">
+                    <i class="bi bi-folder2-open me-2"></i>{{ category_name }}
+                </h3>
+                <div class="doc-list">
+                    {% for doc in docs %}
+                    <div class="doc-item">
+                        <div class="doc-item__icon">
+                            <i class="bi bi-file-earmark-pdf-fill"></i>
+                        </div>
+                        <div class="doc-item__info">
+                            <div class="doc-item__title">{{ doc.title }}</div>
+                            {% if doc.description %}
+                            <div class="doc-item__desc text-muted small">{{ doc.description }}</div>
+                            {% endif %}
+                            <div class="doc-item__date text-muted small">
+                                <i class="bi bi-calendar3 me-1"></i>{{ doc.date|date:"j E Y г." }}
+                            </div>
+                        </div>
+                        <div class="doc-item__action">
+                            <a href="{{ doc.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-download me-1"></i>Открыть
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="bi bi-folder2-open"></i>
+                <p>Документы пока не добавлены.</p>
+                <a href="/admin/" class="btn btn-sm btn-outline-primary">Добавить в панели управления</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

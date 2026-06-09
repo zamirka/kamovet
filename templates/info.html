@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Важная информация{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item active">Важная информация</li>
+            </ol>
+        </nav>
+        <h1 class="page-title">Важная информация</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- Собрания -->
+            <div class="col-12" id="meetings">
+                <div class="info-block">
+                    <div class="info-block__icon"><i class="bi bi-people-fill"></i></div>
+                    <div class="info-block__body">
+                        <h3 class="info-block__title">Собрания членов кооператива</h3>
+                        {% if info %}
+                            {{ info.meetings_schedule|linebreaks }}
+                        {% else %}
+                            <p class="text-muted">Информация не добавлена.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Взносы -->
+            <div class="col-12" id="fees">
+                <div class="info-block info-block--accent">
+                    <div class="info-block__icon"><i class="bi bi-cash-stack"></i></div>
+                    <div class="info-block__body">
+                        <h3 class="info-block__title">Членские взносы</h3>
+                        {% if info %}
+                            <div class="fee-highlight mb-3">
+                                <span class="fee-amount">{{ info.fee_amount }}</span>
+                                <span class="fee-period">{{ info.fee_period }}</span>
+                            </div>
+                            {{ info.fee_payment_info|linebreaks }}
+                        {% else %}
+                            <p class="text-muted">Информация не добавлена.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Контакты -->
+            <div class="col-12" id="contacts">
+                <div class="info-block">
+                    <div class="info-block__icon"><i class="bi bi-telephone-fill"></i></div>
+                    <div class="info-block__body">
+                        <h3 class="info-block__title">Контакты и часы работы</h3>
+                        {% if contacts %}
+                            <div class="row g-3 mt-1">
+                                {% for contact in contacts %}
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="contact-card">
+                                        <div class="contact-role">{{ contact.role }}</div>
+                                        <div class="contact-name">{{ contact.name }}</div>
+                                        {% if contact.phone %}
+                                        <a href="tel:{{ contact.phone }}" class="contact-phone">
+                                            <i class="bi bi-telephone me-1"></i>{{ contact.phone }}
+                                        </a>
+                                        {% endif %}
+                                        {% if contact.email %}
+                                        <a href="mailto:{{ contact.email }}" class="contact-email d-block mt-1">
+                                            <i class="bi bi-envelope me-1"></i>{{ contact.email }}
+                                        </a>
+                                        {% endif %}
+                                        {% if contact.note %}
+                                        <div class="contact-note mt-1">{{ contact.note }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">Контакты не добавлены.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Дополнительно -->
+            {% if info and info.extra_info %}
+            <div class="col-12">
+                <div class="info-block">
+                    <div class="info-block__icon"><i class="bi bi-bookmark-fill"></i></div>
+                    <div class="info-block__body">
+                        <h3 class="info-block__title">Дополнительно</h3>
+                        {{ info.extra_info|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+{% endblock %}

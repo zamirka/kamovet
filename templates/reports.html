@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Отчётность{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item active">Отчётность</li>
+            </ol>
+        </nav>
+        <h1 class="page-title">Отчётность</h1>
+        <p class="page-subtitle">Отчёты о проделанной работе и расходовании средств кооператива</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+
+        <!-- Финансовые отчёты -->
+        <div class="section-header">
+            <h2 class="section-title">Финансовые отчёты</h2>
+            <div class="section-line"></div>
+        </div>
+
+        {% if financial_reports %}
+        <div class="row g-4 mt-1">
+            {% for report in financial_reports %}
+            <div class="col-md-6 col-lg-4">
+                <div class="report-card h-100">
+                    <div class="report-card__period">{{ report.period }}</div>
+                    <h5 class="report-card__title mt-2">{{ report.title }}</h5>
+
+                    {% if report.income or report.expenses %}
+                    <div class="report-finances">
+                        {% if report.income %}
+                        <div class="finance-row finance-row--income">
+                            <span class="finance-label">Доходы</span>
+                            <span class="finance-value">{{ report.income|floatformat:0 }} ₽</span>
+                        </div>
+                        {% endif %}
+                        {% if report.expenses %}
+                        <div class="finance-row finance-row--expense">
+                            <span class="finance-label">Расходы</span>
+                            <span class="finance-value">{{ report.expenses|floatformat:0 }} ₽</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <div class="report-card__content mt-3 text-muted small">
+                        {{ report.content|truncatewords:40 }}
+                    </div>
+
+                    <div class="report-card__footer mt-3">
+                        <span class="text-muted small">
+                            <i class="bi bi-calendar3 me-1"></i>{{ report.date|date:"j E Y" }}
+                        </span>
+                        {% if report.url %}
+                        <a href="{{ report.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-file-earmark me-1"></i>Документ
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-graph-up"></i>
+            <p>Финансовые отчёты не добавлены.</p>
+        </div>
+        {% endif %}
+
+        <!-- Отчёты о работах -->
+        <div class="section-header mt-5">
+            <h2 class="section-title">Отчёты о выполненных работах</h2>
+            <div class="section-line"></div>
+        </div>
+
+        {% if work_reports %}
+        <div class="mt-3">
+            {% for report in work_reports %}
+            <div class="work-report-item">
+                <div class="work-report-header">
+                    <div>
+                        <h5 class="work-report-title mb-0">{{ report.title }}</h5>
+                        <span class="work-report-period">{{ report.period }}</span>
+                    </div>
+                    <span class="text-muted small">{{ report.date|date:"j E Y" }}</span>
+                </div>
+                <div class="work-report-content mt-2">
+                    {{ report.content|linebreaks }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state mt-3">
+            <i class="bi bi-tools"></i>
+            <p>Отчёты о работах не добавлены.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

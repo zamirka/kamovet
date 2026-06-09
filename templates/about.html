@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}О кооперативе{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item active">О кооперативе</li>
+            </ol>
+        </nav>
+        <h1 class="page-title">О кооперативе</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        {% if info %}
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <div class="content-block">
+                    {{ info.full_description|linebreaks }}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="sidebar-card">
+                    <h5 class="sidebar-card__title">
+                        <i class="bi bi-info-circle-fill me-2 text-primary"></i>Сведения
+                    </h5>
+                    <dl class="sidebar-dl">
+                        {% if info.established_year %}
+                        <dt>Год основания</dt>
+                        <dd>{{ info.established_year }}</dd>
+                        {% endif %}
+                        {% if info.total_garages %}
+                        <dt>Гаражных боксов</dt>
+                        <dd>{{ info.total_garages }}</dd>
+                        {% endif %}
+                        {% if info.address %}
+                        <dt>Адрес</dt>
+                        <dd>{{ info.address }}</dd>
+                        {% endif %}
+                        {% if info.working_hours %}
+                        <dt>Часы работы</dt>
+                        <dd>{{ info.working_hours }}</dd>
+                        {% endif %}
+                    </dl>
+                </div>
+
+                <div class="sidebar-card mt-3">
+                    <h5 class="sidebar-card__title">
+                        <i class="bi bi-geo-alt-fill me-2 text-primary"></i>Расположение
+                    </h5>
+                    <p class="text-muted small mb-2">{{ info.address }}</p>
+                    <a href="https://yandex.ru/maps/?text={{ info.address|urlencode }}"
+                       target="_blank" class="btn btn-sm btn-outline-primary w-100">
+                        <i class="bi bi-map me-1"></i>Открыть на карте
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-building"></i>
+            <p>Информация о кооперативе не добавлена.</p>
+            <a href="/admin/" class="btn btn-sm btn-outline-primary">Добавить в панели управления</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="hero-badge mb-3">
+                    <i class="bi bi-geo-alt-fill me-1"></i>г. Люберцы, Московская область
+                </div>
+                <h1 class="hero-title">ГСК «Камовец»</h1>
+                <p class="hero-subtitle">
+                    Гаражно-строительный кооператив. Надёжное хранение вашего автомобиля
+                    с 1987 года.
+                </p>
+                <div class="d-flex flex-wrap gap-2 mt-4">
+                    <a href="{% url 'info' %}" class="btn btn-light btn-lg">
+                        <i class="bi bi-info-circle me-2"></i>Важная информация
+                    </a>
+                    <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg">
+                        О кооперативе
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick info cards -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="info-card h-100">
+                    <div class="info-card-icon"><i class="bi bi-calendar-check"></i></div>
+                    <h5>Собрания</h5>
+                    <p class="text-muted mb-2">Ежегодное общее собрание — апрель–май каждого года.</p>
+                    <a href="{% url 'info' %}#meetings" class="card-link">Подробнее →</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-card h-100">
+                    <div class="info-card-icon"><i class="bi bi-cash-coin"></i></div>
+                    <h5>Членские взносы</h5>
+                    <p class="text-muted mb-2">Приём взносов — каждую субботу с 10:00 до 13:00.</p>
+                    <a href="{% url 'info' %}#fees" class="card-link">Подробнее →</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-card h-100">
+                    <div class="info-card-icon"><i class="bi bi-file-earmark-text"></i></div>
+                    <h5>Документы</h5>
+                    <p class="text-muted mb-2">Устав, протоколы собраний и другие важные документы.</p>
+                    <a href="{% url 'documents' %}" class="card-link">Перейти →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- News -->
+<section class="py-5">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Новости</h2>
+            <div class="section-line"></div>
+        </div>
+
+        {% if news %}
+            <div class="row g-4 mt-1">
+                {% for item in news %}
+                <div class="col-md-{% if forloop.first %}12{% else %}6{% endif %}">
+                    <article class="news-card {% if forloop.first %}news-card--featured{% endif %} h-100">
+                        <div class="news-date">
+                            <i class="bi bi-calendar3 me-1"></i>{{ item.date|date:"j E Y" }}
+                        </div>
+                        <h5 class="news-title mt-2">{{ item.title }}</h5>
+                        <p class="news-content text-muted">
+                            {% if forloop.first %}
+                                {{ item.content|truncatewords:60 }}
+                            {% else %}
+                                {{ item.content|truncatewords:30 }}
+                            {% endif %}
+                        </p>
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="bi bi-newspaper"></i>
+                <p>Новостей пока нет</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
